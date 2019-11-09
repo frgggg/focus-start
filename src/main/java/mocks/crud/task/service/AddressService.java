@@ -15,12 +15,23 @@ public class AddressService implements CrudRepository<Long, Address> {
         addressMap = new HashMap<>();
     }
 
+    private boolean isAddressExist(String address)
+    {
+        for(Address a: addressMap.values())
+        {
+            if(a.getAddress().equals(address))
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public void save(Address element) {
         if(element != null)
             if(element.getId() != null)
                 if(!addressMap.containsKey(element.getId()))
-                    addressMap.put(element.getId(), element);
+                    if(!isAddressExist(element.getAddress()))
+                        addressMap.put(element.getId(), element);
     }
 
     @Override
@@ -43,7 +54,8 @@ public class AddressService implements CrudRepository<Long, Address> {
             {
                 ret = findById(element.getId());
                 if(ret != null)
-                    ret.setAddress(element.getAddress());
+                    if(!isAddressExist(element.getAddress()))
+                        ret.setAddress(element.getAddress());
             }
         return ret;
     }
