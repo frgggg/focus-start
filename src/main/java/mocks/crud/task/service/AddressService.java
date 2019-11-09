@@ -18,8 +18,9 @@ public class AddressService implements CrudRepository<Long, Address> {
     @Override
     public void save(Address element) {
         if(element != null)
-            if(!addressMap.containsKey(element.getId()))
-                addressMap.put(element.getId(), element);
+            if(element.getId() != null)
+                if(!addressMap.containsKey(element.getId()))
+                    addressMap.put(element.getId(), element);
     }
 
     @Override
@@ -36,17 +37,19 @@ public class AddressService implements CrudRepository<Long, Address> {
     public Address update(Address element) {
         Address ret = null;
         if(element != null)
-        {
-            ret = findById(element.getId());
-            if(ret != null)
-                ret.setAddress(element.getAddress());
-        }
+            if(element.getId() != null)
+            {
+                ret = findById(element.getId());
+                if(ret != null)
+                    ret.setAddress(element.getAddress());
+            }
         return ret;
     }
 
     @Override
     public void delete(Address element) {
         if(element != null)
-            addressMap.remove(element.getId());
+            if(element.getId() != null)
+                addressMap.remove(element.getId());
     }
 }
