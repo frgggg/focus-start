@@ -110,7 +110,7 @@ public class PersonServiceTest {
         allPersons.add(PERSON_3);
         when(mockPersonRepository.findAll()).thenReturn(allPersons);
 
-        //bad person params
+        //error person params
         assertNull(personService.getAddress(null));
         assertNull(personService.getAddress(new Person(null, 1, null)));
         assertNull(personService.getAddress(new Person(PERSON_1_NAME, null, null)));

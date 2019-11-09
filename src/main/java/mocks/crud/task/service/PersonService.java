@@ -19,6 +19,7 @@ public class PersonService implements  AdvancedRepository {
         this.personRepository = personRepository;
     }
 
+    //person must have name, age and exist in rep
     private boolean isCorrectPerson(Person person)
     {
         if(person == null)
@@ -46,7 +47,7 @@ public class PersonService implements  AdvancedRepository {
         boolean idEquals, addressEquals;
         for(Person p: personRepository.findAll()) {
             if(person.getName().equals(p.getName()) && person.getAge().equals(p.getAge()))
-                continue;
+                continue;//it's cur person
             if(person.getAddress() == null)
             {
                 if(p.getAddress() == null)
@@ -84,20 +85,17 @@ public class PersonService implements  AdvancedRepository {
             }
         }
 
-        //if(ret.size() == 0)
-            //return null;
-
         return ret;
     }
 
     @Override
     public Address getAddress(Person person) {
-        if(!isCorrectPerson(person))
+        if(!isCorrectPerson(person))//check person
             return null;
 
         for(Person p: personRepository.findAll()) {
             if(p.getAge().equals(person.getAge()))
-                if(p.getName().equals(person.getName()))
+                if(p.getName().equals(person.getName()))//find person with cur name and age in repo
                     return p.getAddress();
         }
 

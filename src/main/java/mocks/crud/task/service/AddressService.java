@@ -15,6 +15,7 @@ public class AddressService implements CrudRepository<Long, Address> {
         addressMap = new HashMap<>();
     }
 
+    //check address in rep
     private boolean isAddressExist(String address)
     {
         String oldAddress;
@@ -55,12 +56,12 @@ public class AddressService implements CrudRepository<Long, Address> {
     @Override
     public Address update(Address element) {
         Address ret = null;
-        if(element != null)
-            if(element.getId() != null)
+        if(element != null)// not null
+            if(element.getId() != null)//not null id
             {
-                ret = findById(element.getId());
+                ret = findById(element.getId());//find cur Address in rep
                 if(ret != null)
-                    if(!isAddressExist(element.getAddress()))
+                    if(!isAddressExist(element.getAddress()))//can't update for existing val!!!
                         ret.setAddress(element.getAddress());
             }
         return ret;
