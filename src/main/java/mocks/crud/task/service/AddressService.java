@@ -25,6 +25,8 @@ public class AddressService implements CrudRepository<Long, Address> {
 
     @Override
     public Address findById(Long id) {
+        if(id == null)
+            return null;
         return addressMap.get(id);
     }
 
