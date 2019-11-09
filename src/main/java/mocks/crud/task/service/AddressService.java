@@ -17,10 +17,16 @@ public class AddressService implements CrudRepository<Long, Address> {
 
     private boolean isAddressExist(String address)
     {
-        for(Address a: addressMap.values())
-        {
-            if(a.getAddress().equals(address))
-                return true;
+        String oldAddress;
+        for(Address a: addressMap.values()) {
+            oldAddress = a.getAddress();
+            if(oldAddress == null) {
+                if (address == null)
+                    return true;
+            }
+            else
+                if(oldAddress.equals(address))
+                    return true;
         }
         return false;
     }
