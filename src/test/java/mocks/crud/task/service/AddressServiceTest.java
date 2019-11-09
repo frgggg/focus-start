@@ -22,6 +22,14 @@ public class AddressServiceTest {
     }
 
     @Test
+    public void deleteTest()
+    {
+        ArrayList<Address> sample = new ArrayList<>();
+        addressService.delete(OK_ADDRESS);
+        assertEquals(addressService.findAll(), sample);
+    }
+
+    @Test
     public void addressServiceSaveAndFindAllTest() {
         ArrayList<Address> sample = new ArrayList<>();
         sample.add(OK_ADDRESS);
@@ -29,44 +37,19 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void findByIdOkId()
+    public void findByIdTest()
     {
         assertEquals(addressService.findById(OK_ADDRESS_ID), OK_ADDRESS);
-    }
-
-    @Test
-    public void findByIdNullId()
-    {
         assertNull(addressService.findById(null));
-    }
-
-    @Test
-    public void findByIdNotExistId()
-    {
         assertNull(addressService.findById(OK_NOT_EXIST_ADDRESS_ID));
     }
 
     @Test
-    public void updateNullAddress()
+    public void updateTest()
     {
         assertNull(addressService.update(null));
-    }
-
-    @Test
-    public void updateNullIdAddress()
-    {
         assertNull(addressService.update(NULL_ADDRESS));
-    }
-
-    @Test
-    public void updateNotExistIdAddress()
-    {
         assertNull(addressService.update(EXIST_ADDRESS_ADDRESS));
-    }
-
-    @Test
-    public void updateOk()
-    {
         addressService.save(new Address(OK_ADDRESS_ID_UPDATE, null));
 
         Address updateAddress = addressService.update(OK_ADDRESS_UPDATE);

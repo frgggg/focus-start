@@ -5,50 +5,122 @@ import mocks.crud.task.model.Person;
 import mocks.crud.task.repository.AdvancedRepository;
 import mocks.crud.task.repository.CrudRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonService implements  AdvancedRepository {
 
     private AddressService addressService;
 
-    private CrudRepository<Person, Long> personRepository;
+    private CrudRepository<Long, Person> personRepository;
 
-    public PersonService(AddressService addressService) {
+    public PersonService(CrudRepository<Long, Person> personRepository, AddressService addressService) {
         this.addressService = addressService;
+        this.personRepository = personRepository;
+    }
+
+    private boolean isCorrectPerson(Person person)
+    {
+        if(person == null)
+            return false;
+        if(person.getName() == null)
+            return false;
+        if(person.getAge() == null)
+            return false;
+        for(Person p: personRepository.findAll()) {
+            if(p.getAge().equals(person.getAge()))
+                if(p.getName().equals(person.getName()))
+                    return true;
+        }
+        return false;
     }
 
     @Override
     public List<Person> findAllRelatives(Person person) {
-        //todo написать реализацию
-        return null;
+
+        if(!isCorrectPerson(person))
+            return null;
+
+
+        List<Person> ret = new ArrayList<>();
+        boolean idEquals, addressEquals;
+        for(Person p: personRepository.findAll()) {
+            if(person.getName().equals(p.getName()) && person.getAge().equals(p.getAge()))
+                continue;
+            if(person.getAddress() == null)
+            {
+                if(p.getAddress() == null)
+                    ret.add(p);
+            }
+            else
+            {
+                idEquals = false;
+                addressEquals = false;
+
+                if(person.getAddress().getId() == null)
+                {
+                    if(p.getAddress().getId() == null)
+                        idEquals = true;
+                }
+                else
+                {
+                    if(person.getAddress().getId().equals(p.getAddress().getId()))
+                        idEquals = true;
+                }
+
+                if(person.getAddress().getAddress() == null)
+                {
+                    if(p.getAddress().getAddress() == null)
+                        addressEquals = true;
+                }
+                else
+                {
+                    if(person.getAddress().getAddress().equals(p.getAddress().getAddress()))
+                        addressEquals = true;
+                }
+
+                if(idEquals && addressEquals)
+                    ret.add(p);
+            }
+        }
+
+        //if(ret.size() == 0)
+            //return null;
+
+        return ret;
     }
 
     @Override
     public Address getAddress(Person person) {
-        //todo написать реализацию
+        if(!isCorrectPerson(person))
+            return null;
+
+        for(Person p: personRepository.findAll()) {
+            if(p.getAge().equals(person.getAge()))
+                if(p.getName().equals(person.getName()))
+                    return p.getAddress();
+        }
+
         return null;
     }
 
     public void save(Person element) {
-        //todo написать реализацию
+        personRepository.save(element);
     }
 
     public Person findById(Long id) {
-        //todo написать реализацию
-        return null;
+        return personRepository.findById(id);
     }
 
     public List<Person> findAll() {
-        //todo написать реализацию
-        return null;
+        return personRepository.findAll();
     }
 
     public Person update(Person element) {
-        //todo написать реализацию
-        return null;
+        return personRepository.update(element);
     }
 
     public void delete(Person element) {
-        //todo написать реализацию
+        personRepository.delete(element);
     }
 }
