@@ -1,5 +1,7 @@
 package mocks.crud.task.model;
 
+import java.util.Objects;
+
 public class Address {
 
     private Long id;
@@ -28,8 +30,7 @@ public class Address {
         this.address = address;
     }
 
-    /*
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
@@ -44,5 +45,11 @@ public class Address {
         return true;
 
     }
-    */
+
+    @Override
+    public int hashCode() {
+        Long id = getId();
+        String address = getAddress();
+        return ((address == null)?0:address.hashCode()) + Long.hashCode(id);
+    }*/
 }

@@ -26,8 +26,10 @@ public class AddressServiceTest {
     @Rule
     public ExpectedException testException = ExpectedException.none();
 
+    //TODO bad result for saveThrowsTest() and saveTest() in saveAllTest()
+    /*
     @Test
-    public void saveTest()
+    public void saveAllTest()
     {
         //null arg element (Address)
         testException.expect(NullPointerException.class);
@@ -56,13 +58,53 @@ public class AddressServiceTest {
         ArrayList<Address> sample = new ArrayList<>();
         sample.add(OK_ADDRESS);
         sample.add(ADDRESS_FOR_DELETE);
-        sample.add(ADDRESS_FOR_UPDATE);
-        assertEquals(sample, addressService.findAll());
-        assertEquals(sample.size(), 333);
+        //sample.add(ADDRESS_FOR_UPDATE);//set error
+        assertEquals(sample, addressService.findAll());//no error
+    }
+    */
+
+    @Test
+    public void saveThrowsTest()
+    {
+        //null arg element (Address)
+        testException.expect(NullPointerException.class);
+        testException.expectMessage(NULL_ARG_THROW_MSG);
+        addressService.save(NULL_ADDRESS);
+        testException = ExpectedException.none();
+
+        //null id of arg element (Address)
+        testException.expect(IllegalArgumentException.class);
+        testException.expectMessage(NULL_ADDRESS_ID_THROW_MSG);
+        addressService.save(NULL_ID_ADDRESS);
+        testException = ExpectedException.none();
+
+        //exist id of element (Address)
+        testException.expect(IllegalArgumentException.class);
+        testException.expectMessage(EXIST_ID_THROW_MSG);
+        addressService.save(EXIST_ID_ADDRESS);
+        testException = ExpectedException.none();
+
+        //exist address of element (Address)
+        testException.expect(IllegalArgumentException.class);
+        testException.expectMessage(EXIST_ADDRESS_THROW_MSG);
+        addressService.save(EXIST_ADDRESS_NOT_EXIST_ID);
+        testException = ExpectedException.none();
     }
 
     @Test
-    public void deleteTest()
+    public void saveTest()
+    {
+        ArrayList<Address> sample = new ArrayList<>();
+        sample.add(OK_ADDRESS);
+        sample.add(ADDRESS_FOR_DELETE);
+        sample.add(ADDRESS_FOR_UPDATE);
+        //TODO order (OK_ADDRESS, ADDRESS_FOR_UPDATE, ADDRESS_FOR_DELETE)
+        //TODO new Address(ADDRESS_FOR_UPDATE.getId(), ADDRESS_FOR_UPDATE.getAddress())
+        assertEquals(sample, addressService.findAll());
+    }
+
+    @Test
+    public void deleteThrowsTest()
     {
         //null arg element (Address)
         testException.expect(NullPointerException.class);
@@ -75,7 +117,11 @@ public class AddressServiceTest {
         testException.expectMessage(NULL_ADDRESS_ID_THROW_MSG);
         addressService.delete(NULL_ID_ADDRESS);
         testException = ExpectedException.none();
+    }
 
+    @Test
+    public void deleteTest()
+    {
         //set example list with OK_ADDRESS
         ArrayList<Address> sample = new ArrayList<>();
         sample.add(OK_ADDRESS);
@@ -86,14 +132,18 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void findByIdTest()
+    public void findByIdThrowsTest()
     {
         //null arg id
         testException.expect(NullPointerException.class);
         testException.expectMessage(NULL_ARG_THROW_MSG);
         addressService.findById(null);
         testException = ExpectedException.none();
+    }
 
+    @Test
+    public void findByIdTest()
+    {
         //no Address with NOT_EXIST_ID id in repo
         assertNull(addressService.findById(NOT_EXIST_ID));
 
@@ -102,7 +152,7 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void updateTest()
+    public void updateThrowsTest()
     {
         //null arg Address
         testException.expect(NullPointerException.class);
@@ -120,7 +170,11 @@ public class AddressServiceTest {
         testException.expectMessage(EXIST_ADDRESS_THROW_MSG);
         addressService.update(THROW_UPDATE_ADDRESS);
         testException = ExpectedException.none();
+    }
 
+    @Test
+    public void updateTest()
+    {
         assertNull(addressService.update(EXIST_ADDRESS_NOT_EXIST_ID));
 
         Address updateAddress = addressService.update(OK_UPDATE_ADDRESS);
