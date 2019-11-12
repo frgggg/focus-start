@@ -1,7 +1,5 @@
 package mocks.crud.task.model;
 
-import java.util.Objects;
-
 public class Address {
 
     private Long id;
