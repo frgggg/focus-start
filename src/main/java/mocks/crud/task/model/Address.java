@@ -27,4 +27,22 @@ public class Address {
         this.id = id;
         this.address = address;
     }
+
+    /*
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Address address = (Address) o;
+        if(!getAddress().equals(address.getAddress()))
+            return false;
+        if(getId().equals(address.getId()))
+            return false;
+        return true;
+
+    }
+    */
 }

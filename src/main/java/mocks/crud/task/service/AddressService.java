@@ -1,6 +1,5 @@
 package mocks.crud.task.service;
 
-import com.sun.istack.internal.NotNull;
 import mocks.crud.task.model.Address;
 import mocks.crud.task.repository.CrudRepository;
 
@@ -8,7 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//TODO is new throw class for AddressService needed?
 public class AddressService implements CrudRepository<Long, Address> {
+    public static final String NULL_ARG_THROW_MSG = "Arg is null.";
+    public static final String NULL_ADDRESS_ID_THROW_MSG = "Id of Address arg is null.";
+    public static final String EXIST_ID_THROW_MSG = "Address with current id is already exist.";
+    public static final String EXIST_ADDRESS_THROW_MSG = "Address with current address is already exist.";
+
     private HashMap<Long, Address> addressMap;
 
     public AddressService()
@@ -16,21 +21,26 @@ public class AddressService implements CrudRepository<Long, Address> {
         addressMap = new HashMap<>();
     }
 
-    //check address in rep
+    /**
+     *
+     * @param address for check in repo
+     * @return true, if element with current address is in repo, else false
+     */
     private boolean isAddressExist(String address)
     {
-        String oldAddress;
-        for(Address a: addressMap.values()) {
-            oldAddress = a.getAddress();
-            if(oldAddress == null) {
-                if (address == null)
+        for(Address a: addressMap.values())
+                if(a.getAddress().equals(address))
                     return true;
-            }
-            else
-                if(oldAddress.equals(address))
-                    return true;
-        }
         return false;
+    }
+
+    private void checkElementArg(Address element) throws NullPointerException, IllegalArgumentException
+    {
+        if(element == null)
+            throw new NullPointerException(NULL_ARG_THROW_MSG);
+
+        if(element.getId() == null)
+            throw new IllegalArgumentException(NULL_ADDRESS_ID_THROW_MSG);
     }
 
     /**
@@ -41,23 +51,18 @@ public class AddressService implements CrudRepository<Long, Address> {
      *                                     or element with current id is already exist
      *                                     or address of element is already exist
      */
-    //TODO is new throws needed?
     @Override
-    public void save(@NotNull Address element) throws NullPointerException, IllegalArgumentException
+    public void save(Address element) throws NullPointerException, IllegalArgumentException
     {
-        if(element == null)
-            throw new NullPointerException("Element is null");
-
-        if(element.getId() == null)
-            throw new IllegalArgumentException("Id of element is null");
+        checkElementArg(element);
 
         if(addressMap.containsKey(element.getId()))
-            throw new IllegalArgumentException("Element with current id is already exist");
+            throw new IllegalArgumentException(EXIST_ID_THROW_MSG);
 
         if(isAddressExist(element.getAddress()))
-            addressMap.put(element.getId(), element);
+            throw new IllegalArgumentException(EXIST_ADDRESS_THROW_MSG);
         else
-            throw new IllegalArgumentException("Element with current address is already exist");
+            addressMap.put(element.getId(), element);
     }
 
     /**
@@ -67,9 +72,10 @@ public class AddressService implements CrudRepository<Long, Address> {
      * @return Address with current id
      */
     @Override
-    public Address findById(@NotNull Long id) {
+    public Address findById(Long id) throws NullPointerException
+    {
         if(id == null)
-            throw new NullPointerException("Null id arg.");
+            throw new NullPointerException(NULL_ARG_THROW_MSG);
         return addressMap.get(id);
     }
 
@@ -87,44 +93,38 @@ public class AddressService implements CrudRepository<Long, Address> {
      * @return Address with id of element and new address
      */
     @Override
-    public Address update(@NotNull Address element) {
-        if(element == null)
-            throw new NullPointerException("Element is null");
+    public Address update(Address element) throws NullPointerException, IllegalArgumentException
+    {
+        checkElementArg(element);
 
-        Long id = element.getId();
-        if(id == null)
-            throw new IllegalArgumentException("Id of element is null");
-
-        Address ret = findById(id);//find cur Address in rep
+        Address ret = findById(element.getId());//find cur Address in repo
 
         if(ret != null) {
             String address = element.getAddress();
             if(ret.getAddress().equals(address))
                 return ret;
 
-            if (!isAddressExist(address))
+            if (!isAddressExist(address)) {
                 ret.setAddress(address);
+                return ret;
+            }
             else
-                throw new IllegalArgumentException("Address with address of element is already exist");
+                throw new IllegalArgumentException(EXIST_ADDRESS_THROW_MSG);
         }
         return null;
     }
 
     /**
      *
-     * @param element for delete from repo
+     * @param element for delete from repo by id
      * @throws NullPointerException if element is null
      * @throws IllegalArgumentException if id of element is null
      */
     @Override
-    public void delete(Address element) {
-        if(element == null)
-            throw new NullPointerException("Element is null");
+    public void delete(Address element) throws NullPointerException, IllegalArgumentException
+    {
+        checkElementArg(element);
 
-        Long id = element.getId();
-        if(id == null)
-            throw new IllegalArgumentException("Id of element is null");
-
-        addressMap.remove(id);
+        addressMap.remove(element.getId());
     }
 }
