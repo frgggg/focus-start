@@ -34,7 +34,7 @@ public class AddressService implements CrudRepository<Long, Address> {
         return false;
     }
 
-    private void checkElementArg(Address element) throws NullPointerException, IllegalArgumentException
+    private void checkElementArg(Address element)
     {
         if(element == null)
             throw new NullPointerException(NULL_ARG_THROW_MSG);
@@ -46,13 +46,9 @@ public class AddressService implements CrudRepository<Long, Address> {
     /**
      *
      * @param element new element for repo
-     * @throws NullPointerException if element is null
-     * @throws IllegalArgumentException if id of element is null
-     *                                     or element with current id is already exist
-     *                                     or address of element is already exist
      */
     @Override
-    public void save(Address element) throws NullPointerException, IllegalArgumentException
+    public void save(Address element)
     {
         checkElementArg(element);
 
@@ -68,11 +64,10 @@ public class AddressService implements CrudRepository<Long, Address> {
     /**
      *
      * @param id check repo for Address with current id
-     * @throws NullPointerException if id is null
      * @return Address with current id
      */
     @Override
-    public Address findById(Long id) throws NullPointerException
+    public Address findById(Long id)
     {
         if(id == null)
             throw new NullPointerException(NULL_ARG_THROW_MSG);
@@ -87,13 +82,10 @@ public class AddressService implements CrudRepository<Long, Address> {
     /**
      *
      * @param element check repo for Address with id of element and update address
-     * @throws NullPointerException if element is null
-     * @throws IllegalArgumentException if id of element is null
-     *                                     or new address of element is already exist in repo
      * @return Address with id of element and new address
      */
     @Override
-    public Address update(Address element) throws NullPointerException, IllegalArgumentException
+    public Address update(Address element)
     {
         checkElementArg(element);
 
@@ -117,11 +109,9 @@ public class AddressService implements CrudRepository<Long, Address> {
     /**
      *
      * @param element for delete from repo by id
-     * @throws NullPointerException if element is null
-     * @throws IllegalArgumentException if id of element is null
      */
     @Override
-    public void delete(Address element) throws NullPointerException, IllegalArgumentException
+    public void delete(Address element)
     {
         checkElementArg(element);
 

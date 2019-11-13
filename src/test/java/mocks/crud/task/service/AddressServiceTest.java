@@ -26,43 +26,6 @@ public class AddressServiceTest {
     @Rule
     public ExpectedException testException = ExpectedException.none();
 
-    //TODO bad result for saveThrowsTest() and saveTest() in saveAllTest()
-    /*
-    @Test
-    public void saveAllTest()
-    {
-        //null arg element (Address)
-        testException.expect(NullPointerException.class);
-        testException.expectMessage(NULL_ARG_THROW_MSG);
-        addressService.save(NULL_ADDRESS);
-        testException = ExpectedException.none();
-
-        //null id of arg element (Address)
-        testException.expect(IllegalArgumentException.class);
-        testException.expectMessage(NULL_ADDRESS_ID_THROW_MSG);
-        addressService.save(NULL_ID_ADDRESS);
-        testException = ExpectedException.none();
-
-        //exist id of element (Address)
-        testException.expect(IllegalArgumentException.class);
-        testException.expectMessage(EXIST_ID_THROW_MSG);
-        addressService.save(EXIST_ID_ADDRESS);
-        testException = ExpectedException.none();
-
-        //exist address of element (Address)
-        testException.expect(IllegalArgumentException.class);
-        testException.expectMessage(EXIST_ADDRESS_THROW_MSG);
-        addressService.save(EXIST_ADDRESS_NOT_EXIST_ID);
-        testException = ExpectedException.none();
-
-        ArrayList<Address> sample = new ArrayList<>();
-        sample.add(OK_ADDRESS);
-        sample.add(ADDRESS_FOR_DELETE);
-        //sample.add(ADDRESS_FOR_UPDATE);//set error
-        assertEquals(sample, addressService.findAll());//no error
-    }
-    */
-
     @Test
     public void saveThrowsTest()
     {
